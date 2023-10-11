@@ -34,33 +34,6 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public ProductDTO getProductByCode(String code) throws Exception {
-        Optional<Product> product = this.productRepository.findProductByCode(code);
-        if(product.isEmpty()) {
-            throw new Exception("Produto não encontrado");
-        }
-        return new ProductDTO(product.get());
-    }
-
-    @Transactional(readOnly = true)
-    public ProductDTO getProductByName(String name) throws Exception {
-        Optional<Product> product = this.productRepository.findProductByName(name);
-        if(product.isEmpty()) {
-            throw new Exception("Produto não encontrado");
-        }
-        return new ProductDTO(product.get());
-    }
-
-    @Transactional(readOnly = true)
-    public List<ProductDTO> getProductByPrice(BigDecimal unitaryPrice) throws Exception {
-        Optional<List<Product>> products = this.productRepository.findAllProductByUnitaryPrice(unitaryPrice);
-        if(products.isEmpty()) {
-            throw new Exception("Produtos não encontrado");
-        }
-        return products.get().stream().map(ProductDTO::new).toList();
-    }
-
-    @Transactional(readOnly = true)
     public List<ProductDTO> getAllProducts() {
         return this.productRepository.findAll().stream().map(ProductDTO::new).toList();
     }
@@ -83,5 +56,11 @@ public class ProductService {
         } else {
             throw new Exception("Produto não encontrado");
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductDTO> getAllProductsByParams(String code, String name, BigDecimal unitaryPrice) {
+        List<Product> productList = this.productRepository.findAllProductByCodeOrNameOrUnitaryPrice(code, name, unitaryPrice);
+        return productList.stream().map(ProductDTO::new).toList();
     }
 }

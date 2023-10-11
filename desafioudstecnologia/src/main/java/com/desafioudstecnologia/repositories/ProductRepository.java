@@ -1,7 +1,6 @@
 package com.desafioudstecnologia.repositories;
 
 import com.desafioudstecnologia.domain.product.Product;
-import com.desafioudstecnologia.dtos.ProductDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigDecimal;
@@ -14,5 +13,5 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 
     Optional<Product> findProductByName(String name);
 
-    Optional<List<Product>> findAllProductByUnitaryPrice(BigDecimal unitaryPrice);
+    List<Product> findAllProductByCodeOrNameOrUnitaryPrice(String code, String name, BigDecimal unitaryPrice);
 }
