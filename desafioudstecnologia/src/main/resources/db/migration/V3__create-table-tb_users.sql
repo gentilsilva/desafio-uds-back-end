@@ -1,0 +1,8 @@
+CREATE TABLE tb_users(
+    id UUID DEFAULT RANDOM_UUID() NOT NULL,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    cpf VARCHAR(11) NOT NULL UNIQUE,
+    birth_date DATE,
+
+    PRIMARY KEY(id)
+)
