@@ -63,4 +63,14 @@ public class ClientService {
         }
         throw new Exception("Cliente não encontrado");
     }
+
+    @Transactional
+    public void deleteClient(String cpf) throws Exception {
+        Optional<Client> client = this.clientRepository.findClientByCpf(cpf);
+        if(client.isPresent()) {
+            this.clientRepository.delete(client.get());
+        } else {
+            throw new Exception("Cliente não encontrado");
+        }
+    }
 }

@@ -47,4 +47,10 @@ public class ClientController {
         return ResponseEntity.ok().body(clientDTO);
     }
 
+    @DeleteMapping("/{cpf}")
+    public ResponseEntity<?> deleteClient(@PathVariable String cpf) throws Exception {
+        this.clientService.deleteClient(cpf);
+        return ResponseEntity.noContent().build();
+    }
+
 }
