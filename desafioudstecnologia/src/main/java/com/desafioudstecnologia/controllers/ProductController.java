@@ -40,12 +40,14 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> getProductByParams(@RequestParam(required = false) String code,
                                                                @RequestParam(required = false) String name,
                                                                @RequestParam(required = false) BigDecimal unitaryPrice) {
-        return ResponseEntity.ok().body(this.productService.getAllProductsByParams(code, name, unitaryPrice));
+        List<ProductDTO> productDTOList = this.productService.getAllProductsByParams(code, name, unitaryPrice);
+        return ResponseEntity.ok().body(productDTOList);
     }
 
     @PutMapping
     public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductForm productForm) throws Exception {
-        return ResponseEntity.ok().body(this.productService.updateProduct(productForm));
+        ProductDTO productDTO = this.productService.updateProduct(productForm);
+        return ResponseEntity.ok().body(productDTO);
     }
 
     @DeleteMapping("{code}")
