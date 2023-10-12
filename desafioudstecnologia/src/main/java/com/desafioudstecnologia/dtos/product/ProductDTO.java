@@ -1,4 +1,4 @@
-package com.desafioudstecnologia.dtos;
+package com.desafioudstecnologia.dtos.product;
 
 import com.desafioudstecnologia.domain.product.Product;
 

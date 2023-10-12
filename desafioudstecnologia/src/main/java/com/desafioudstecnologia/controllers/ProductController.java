@@ -1,7 +1,7 @@
 package com.desafioudstecnologia.controllers;
 
-import com.desafioudstecnologia.dtos.ProductDTO;
-import com.desafioudstecnologia.dtos.ProductForm;
+import com.desafioudstecnologia.dtos.product.ProductDTO;
+import com.desafioudstecnologia.dtos.product.ProductForm;
 import com.desafioudstecnologia.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +50,7 @@ public class ProductController {
         return ResponseEntity.ok().body(productDTO);
     }
 
-    @DeleteMapping("{code}")
+    @DeleteMapping("/{code}")
     public ResponseEntity<?> deleteProduct(@PathVariable String code) throws Exception {
         this.productService.deleteProduct(code);
         return ResponseEntity.notFound().build();

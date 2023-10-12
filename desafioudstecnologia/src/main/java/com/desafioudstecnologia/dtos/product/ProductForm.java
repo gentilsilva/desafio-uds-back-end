@@ -1,4 +1,4 @@
-package com.desafioudstecnologia.dtos;
+package com.desafioudstecnologia.dtos.product;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

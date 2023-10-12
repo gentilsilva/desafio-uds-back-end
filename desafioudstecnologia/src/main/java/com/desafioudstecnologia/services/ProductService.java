@@ -1,8 +1,8 @@
 package com.desafioudstecnologia.services;
 
 import com.desafioudstecnologia.domain.product.Product;
-import com.desafioudstecnologia.dtos.ProductDTO;
-import com.desafioudstecnologia.dtos.ProductForm;
+import com.desafioudstecnologia.dtos.product.ProductDTO;
+import com.desafioudstecnologia.dtos.product.ProductForm;
 import com.desafioudstecnologia.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +38,12 @@ public class ProductService {
         return this.productRepository.findAll().stream().map(ProductDTO::new).toList();
     }
 
+    @Transactional(readOnly = true)
+    public List<ProductDTO> getAllProductsByParams(String code, String name, BigDecimal unitaryPrice) {
+        List<Product> productList = this.productRepository.findAllProductByCodeOrNameOrUnitaryPrice(code, name, unitaryPrice);
+        return productList.stream().map(ProductDTO::new).toList();
+    }
+
     @Transactional
     public ProductDTO updateProduct(ProductForm productForm) throws Exception {
         Optional<Product> product = this.productRepository.findProductByCode(productForm.code());
@@ -58,9 +64,4 @@ public class ProductService {
         }
     }
 
-    @Transactional(readOnly = true)
-    public List<ProductDTO> getAllProductsByParams(String code, String name, BigDecimal unitaryPrice) {
-        List<Product> productList = this.productRepository.findAllProductByCodeOrNameOrUnitaryPrice(code, name, unitaryPrice);
-        return productList.stream().map(ProductDTO::new).toList();
-    }
 }

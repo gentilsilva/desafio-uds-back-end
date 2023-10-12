@@ -1,6 +1,6 @@
 package com.desafioudstecnologia.domain.product;
 
-import com.desafioudstecnologia.dtos.ProductForm;
+import com.desafioudstecnologia.dtos.product.ProductForm;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
