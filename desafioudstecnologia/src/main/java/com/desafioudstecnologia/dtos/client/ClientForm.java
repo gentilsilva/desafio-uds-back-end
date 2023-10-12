@@ -1,4 +1,4 @@
-package com.desafioudstecnologia.dtos.user;
+package com.desafioudstecnologia.dtos.client;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 
-public record UserForm(
+public record ClientForm(
         @NotBlank
         String name,
         @CPF
