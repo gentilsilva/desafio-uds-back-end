@@ -1,4 +1,4 @@
-INSERT INTO tb_users(name, cpf, birth_date)
+INSERT INTO tb_clients(name, cpf, birth_date)
 VALUES  ('João Silva', '64722044031', '1980-05-15'),
         ('Maria Oliveira', '26171453013', '1992-09-22'),
         ('Pedro Souza', '55087579027', '1985-07-10'),
