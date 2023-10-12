@@ -34,4 +34,11 @@ public class UserController {
         return ResponseEntity.ok().body(userDTOList);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<UserDTO>> getAllUsersByParams(@RequestParam(required = false) String name, @RequestParam(required = false) String cpf,
+                                                             @RequestParam(required = false) String birthDate) {
+        List<UserDTO> userDTOList = this.userService.getAllUsersByParams(name, cpf, birthDate);
+        return ResponseEntity.ok().body(userDTOList);
+    }
+
 }
