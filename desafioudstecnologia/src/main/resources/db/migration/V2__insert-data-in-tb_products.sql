@@ -1,4 +1,4 @@
-INSERT INTO tb_products (code, name, unitary_price)
+INSERT INTO tb_products(code, name, unitary_price)
 VALUES ('ABC123', 'Produto A', 10.99),
        ('DEF456', 'Produto B', 15.50),
        ('GHI789', 'Produto C', 8.75),
