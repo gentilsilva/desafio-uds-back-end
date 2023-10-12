@@ -5,13 +5,11 @@ import com.desafioudstecnologia.dtos.user.UserForm;
 import com.desafioudstecnologia.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -30,5 +28,10 @@ public class UserController {
         return ResponseEntity.created(uri).body(userDTO);
     }
 
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> userDTOList = this.userService.getAllUsers();
+        return ResponseEntity.ok().body(userDTOList);
+    }
 
 }
