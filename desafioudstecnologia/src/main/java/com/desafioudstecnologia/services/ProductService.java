@@ -64,4 +64,12 @@ public class ProductService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public Product getProductByCode(String code) throws Exception {
+        Optional<Product> product = this.productRepository.findProductByCode(code);
+        if(product.isPresent()) {
+            return product.get();
+        }
+        throw new Exception("Produto não encontrado.");
+    }
 }
