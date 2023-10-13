@@ -1,5 +1,6 @@
 package com.desafioudstecnologia.domain.client;
 
+import com.desafioudstecnologia.domain.order.Order;
 import com.desafioudstecnologia.dtos.client.ClientForm;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "clients")
@@ -31,6 +33,9 @@ public class Client {
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
+
+    @OneToMany(mappedBy = "client")
+    private List<Order> orderList;
 
     public Client(ClientForm clientForm) {
         this.name = clientForm.name();

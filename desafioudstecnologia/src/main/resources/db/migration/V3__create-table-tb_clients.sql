@@ -1,8 +1,8 @@
 CREATE TABLE tb_clients(
-    id UUID DEFAULT RANDOM_UUID() NOT NULL,
+    id UUID DEFAULT RANDOM_UUID() NOT NULL UNIQUE,
     name VARCHAR(255) NOT NULL UNIQUE,
     cpf VARCHAR(11) NOT NULL UNIQUE,
-    birth_date DATE,
+    birth_date DATE NOT NULL,
 
     PRIMARY KEY(id)
 )
