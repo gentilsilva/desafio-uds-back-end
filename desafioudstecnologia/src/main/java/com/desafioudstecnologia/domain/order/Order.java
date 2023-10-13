@@ -26,10 +26,20 @@ public class Order {
     private BigDecimal total;
 
     @ManyToOne
-    @JoinColumn(name = "client_cpf", columnDefinition = "cpf")
+    @JoinColumn(name = "client_cpf", referencedColumnName = "cpf")
     private Client client;
 
     @OneToMany
     private List<OrderedItem> orderedItemList;
 
+    public Order(Client client, Integer total) {
+        this.emission = LocalDate.now();
+        this.number = ++total;
+        this.client = client;
+        this.total = BigDecimal.ZERO;
+    }
+
+    public void update(BigDecimal sumPrice) {
+        this.total = sumPrice;
+    }
 }
