@@ -73,4 +73,13 @@ public class ClientService {
             throw new Exception("Cliente não encontrado");
         }
     }
+
+    @Transactional(readOnly = true)
+    public Client getClientByCpf(String cpf) throws Exception {
+        Optional<Client> client = this.clientRepository.findClientByCpf(cpf);
+        if(client.isPresent()) {
+            return client.get();
+        }
+        throw new Exception("Cliente não encontrado");
+    }
 }
