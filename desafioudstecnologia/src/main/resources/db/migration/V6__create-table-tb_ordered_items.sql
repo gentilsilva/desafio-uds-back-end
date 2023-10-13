@@ -5,7 +5,7 @@ CREATE TABLE tb_ordered_items(
     discount_percentage DOUBLE NOT NULL,
     total DECIMAL(10, 2) NOT NULL,
     product_code VARCHAR(255) NOT NULL,
-    order_number INTEGER NOT NULL UNIQUE,
+    order_number INTEGER NOT NULL,
 
     PRIMARY KEY(id),
     FOREIGN KEY(product_code) REFERENCES tb_products(code),
