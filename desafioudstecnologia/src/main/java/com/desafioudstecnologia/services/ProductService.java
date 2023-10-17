@@ -3,6 +3,8 @@ package com.desafioudstecnologia.services;
 import com.desafioudstecnologia.domain.product.Product;
 import com.desafioudstecnologia.dtos.product.ProductDTO;
 import com.desafioudstecnologia.dtos.product.ProductForm;
+import com.desafioudstecnologia.exeptions.DuplicateRecordException;
+import com.desafioudstecnologia.exeptions.RecordNotFoundException;
 import com.desafioudstecnologia.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,15 +23,19 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO createProduct(ProductForm productForm) throws Exception {
-        Optional<Product> optionalProductCode = this.productRepository.findProductByCode(productForm.code());
-        Optional<Product> optionalProductName = this.productRepository.findProductByName(productForm.name());
+    public ProductDTO createProduct(ProductForm productForm) {
+        Optional<Product> productCode = this.productRepository.findProductByCode(productForm.code());
+        if(productCode.isPresent()) {
+            throw new DuplicateRecordException(productForm.code());
+        }
 
-        if(optionalProductCode.isPresent() || optionalProductName.isPresent()) {
-            throw new Exception("Produto já cadastrado");
+        Optional<Product> productName = this.productRepository.findProductByName(productForm.name());
+        if(productName.isPresent()) {
+            throw new DuplicateRecordException(productForm.name());
         }
 
         Product product = new Product(productForm);
+        this.productRepository.save(product);
         return new ProductDTO(product);
     }
 
@@ -45,31 +51,23 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO updateProduct(ProductForm productForm) throws Exception {
-        Optional<Product> product = this.productRepository.findProductByCode(productForm.code());
-        if(product.isPresent()) {
-            product.get().update(productForm);
-            return new ProductDTO(product.get());
-        }
-        throw new Exception("Produto não encontrado");
+    public ProductDTO updateProduct(ProductForm productForm) {
+        Product product = this.productRepository.findProductByCode(productForm.code()).orElseThrow(() ->
+                new RecordNotFoundException(productForm.code()));
+        product.update(productForm);
+        return new ProductDTO(product);
+
     }
 
     @Transactional
-    public void deleteProduct(String code) throws Exception {
-        Optional<Product> product = this.productRepository.findProductByCode(code);
-        if(product.isPresent()) {
-            this.productRepository.delete(product.get());
-        } else {
-            throw new Exception("Produto não encontrado");
-        }
+    public void deleteProduct(String code) {
+        Product product = this.productRepository.findProductByCode(code).orElseThrow(() -> new RecordNotFoundException(code));
+        this.productRepository.delete(product);
+
     }
 
     @Transactional(readOnly = true)
-    public Product getProductByCode(String code) throws Exception {
-        Optional<Product> product = this.productRepository.findProductByCode(code);
-        if(product.isPresent()) {
-            return product.get();
-        }
-        throw new Exception("Produto não encontrado.");
+    public Product getProductByCode(String code) {
+        return this.productRepository.findProductByCode(code).orElseThrow(() -> new RecordNotFoundException(code));
     }
 }
