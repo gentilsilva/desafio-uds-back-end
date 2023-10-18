@@ -23,8 +23,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid ProductForm productForm, UriComponentsBuilder uriComponentsBuilder)
-            throws Exception {
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid ProductForm productForm, UriComponentsBuilder uriComponentsBuilder) {
         ProductDTO productDTO = productService.createProduct(productForm);
         URI uri = uriComponentsBuilder.path("/products/{id}").buildAndExpand(productDTO.id()).toUri();
         return ResponseEntity.created(uri).body(productDTO);
@@ -45,13 +44,13 @@ public class ProductController {
     }
 
     @PutMapping
-    public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductForm productForm) throws Exception {
+    public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductForm productForm) {
         ProductDTO productDTO = this.productService.updateProduct(productForm);
         return ResponseEntity.ok().body(productDTO);
     }
 
     @DeleteMapping("/{code}")
-    public ResponseEntity<?> deleteProduct(@PathVariable String code) throws Exception {
+    public ResponseEntity<?> deleteProduct(@PathVariable String code) {
         this.productService.deleteProduct(code);
         return ResponseEntity.notFound().build();
     }

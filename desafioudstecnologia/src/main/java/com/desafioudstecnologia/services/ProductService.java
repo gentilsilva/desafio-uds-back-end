@@ -24,16 +24,7 @@ public class ProductService {
 
     @Transactional
     public ProductDTO createProduct(ProductForm productForm) {
-        Optional<Product> productCode = this.productRepository.findProductByCode(productForm.code());
-        if(productCode.isPresent()) {
-            throw new DuplicateRecordException(productForm.code());
-        }
-
-        Optional<Product> productName = this.productRepository.findProductByName(productForm.name());
-        if(productName.isPresent()) {
-            throw new DuplicateRecordException(productForm.name());
-        }
-
+        this.checkForDuplicate(productForm);
         Product product = new Product(productForm);
         this.productRepository.save(product);
         return new ProductDTO(product);
@@ -69,5 +60,18 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Product getProductByCode(String code) {
         return this.productRepository.findProductByCode(code).orElseThrow(() -> new RecordNotFoundException(code));
+    }
+
+    public void checkForDuplicate(ProductForm productForm) {
+        Optional<Product> productCode = this.productRepository.findProductByCode(productForm.code());
+        Optional<Product> productName = this.productRepository.findProductByName(productForm.name());
+
+        if(productCode.isPresent()) {
+            throw new DuplicateRecordException(productForm.code());
+        }
+
+        if(productName.isPresent()) {
+            throw new DuplicateRecordException(productForm.name());
+        }
     }
 }
