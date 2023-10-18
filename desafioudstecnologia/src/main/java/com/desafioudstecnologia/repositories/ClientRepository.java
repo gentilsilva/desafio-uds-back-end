@@ -12,4 +12,6 @@ public interface ClientRepository extends JpaRepository<Client, UUID> {
     List<Client> findAllUsersByNameOrCpfOrBirthDate(String name, String cpf, LocalDate birthDate);
 
     Optional<Client> findClientByCpf(String cpf);
+
+    Optional<Client> findClientByName(String name);
 }
