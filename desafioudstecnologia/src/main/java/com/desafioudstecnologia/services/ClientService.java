@@ -1,8 +1,12 @@
 package com.desafioudstecnologia.services;
 
 import com.desafioudstecnologia.domain.client.Client;
+import com.desafioudstecnologia.domain.product.Product;
 import com.desafioudstecnologia.dtos.client.ClientDTO;
 import com.desafioudstecnologia.dtos.client.ClientForm;
+import com.desafioudstecnologia.dtos.product.ProductForm;
+import com.desafioudstecnologia.exeptions.DuplicateRecordException;
+import com.desafioudstecnologia.exeptions.RecordNotFoundException;
 import com.desafioudstecnologia.repositories.ClientRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +27,7 @@ public class ClientService {
 
     @Transactional
     public ClientDTO createClient(ClientForm clientForm) {
+        this.checkForDuplicate(clientForm);
         Client client = new Client(clientForm);
         this.clientRepository.save(client);
         return new ClientDTO(client);
@@ -44,6 +49,39 @@ public class ClientService {
         return clientList.stream().map(ClientDTO::new).toList();
     }
 
+    @Transactional
+    public ClientDTO updateClient(ClientForm clientForm) {
+        Client client = this.clientRepository.findClientByCpf(clientForm.cpf()).orElseThrow(() ->
+                new RecordNotFoundException(clientForm.cpf()));
+        client.update(clientForm);
+            return new ClientDTO(client);
+    }
+
+    @Transactional
+    public void deleteClient(String cpf) {
+        Client client = this.clientRepository.findClientByCpf(cpf).orElseThrow(() -> new RecordNotFoundException(cpf));
+        this.clientRepository.delete(client);
+    }
+
+    @Transactional(readOnly = true)
+    public Client getClientByCpf(String cpf) {
+        return this.clientRepository.findClientByCpf(cpf).orElseThrow(() -> new RecordNotFoundException(cpf));
+
+    }
+
+    public void checkForDuplicate(ClientForm clientForm) {
+        Optional<Client> clientCpf = this.clientRepository.findClientByCpf(clientForm.cpf());
+        Optional<Client> clientName = this.clientRepository.findClientByName(clientForm.name());
+
+        if(clientCpf.isPresent()) {
+            throw new DuplicateRecordException(clientForm.cpf());
+        }
+
+        if(clientName.isPresent()) {
+            throw new DuplicateRecordException(clientForm.name());
+        }
+    }
+
     private LocalDate formatDate(String date) {
         DateTimeFormatter localDateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate localDate = LocalDate.parse(date, localDateFormatter);
@@ -52,34 +90,5 @@ public class ClientService {
         String databaseFormat = localDate.format(dataBaseFormatter);
 
         return LocalDate.parse(databaseFormat);
-    }
-
-    @Transactional
-    public ClientDTO updateClient(ClientForm clientForm) throws Exception {
-        Optional<Client> client = this.clientRepository.findClientByCpf(clientForm.cpf());
-        if(client.isPresent()) {
-            client.get().update(clientForm);
-            return new ClientDTO(client.get());
-        }
-        throw new Exception("Cliente não encontrado");
-    }
-
-    @Transactional
-    public void deleteClient(String cpf) throws Exception {
-        Optional<Client> client = this.clientRepository.findClientByCpf(cpf);
-        if(client.isPresent()) {
-            this.clientRepository.delete(client.get());
-        } else {
-            throw new Exception("Cliente não encontrado");
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public Client getClientByCpf(String cpf) throws Exception {
-        Optional<Client> client = this.clientRepository.findClientByCpf(cpf);
-        if(client.isPresent()) {
-            return client.get();
-        }
-        throw new Exception("Cliente não encontrado");
     }
 }
