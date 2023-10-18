@@ -42,13 +42,13 @@ public class ClientController {
     }
 
     @PutMapping
-    public ResponseEntity<ClientDTO> updateClient(@RequestBody @Valid ClientForm clientForm) throws Exception {
+    public ResponseEntity<ClientDTO> updateClient(@RequestBody @Valid ClientForm clientForm) {
         ClientDTO clientDTO = this.clientService.updateClient(clientForm);
         return ResponseEntity.ok().body(clientDTO);
     }
 
     @DeleteMapping("/{cpf}")
-    public ResponseEntity<?> deleteClient(@PathVariable String cpf) throws Exception {
+    public ResponseEntity<?> deleteClient(@PathVariable String cpf) {
         this.clientService.deleteClient(cpf);
         return ResponseEntity.noContent().build();
     }
