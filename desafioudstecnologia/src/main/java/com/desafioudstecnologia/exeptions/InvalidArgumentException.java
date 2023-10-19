@@ -2,7 +2,7 @@ package com.desafioudstecnologia.exeptions;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-public class InvalidArgumentException {
+public class InvalidArgumentException extends RuntimeException{
 
     public static String returnMessage(MethodArgumentNotValidException exception) {
         String field = exception.getFieldError().getField();

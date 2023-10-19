@@ -2,13 +2,16 @@ package com.desafioudstecnologia.domain.client;
 
 import com.desafioudstecnologia.domain.order.Order;
 import com.desafioudstecnologia.dtos.client.ClientForm;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,18 +43,23 @@ public class Client {
     public Client(ClientForm clientForm) {
         this.name = clientForm.name();
         this.cpf = clientForm.cpf();
-        this.birthDate = clientForm.birthDate();
+        this.birthDate = formatDate(clientForm.birthDate());
     }
 
-    public void update(ClientForm client) {
-        if(!client.name().isEmpty()) {
-            this.name = client.name();
+    public void update(ClientForm clientForm) {
+        if(!clientForm.name().isEmpty()) {
+            this.name = clientForm.name();
         }
-        if(!client.cpf().isEmpty()) {
-            this.cpf = client.cpf();
+        if(!clientForm.cpf().isEmpty()) {
+            this.cpf = clientForm.cpf();
         }
-        if(!(client.birthDate() == null)) {
-            this.birthDate = client.birthDate();
+        if(!(clientForm.birthDate() == null)) {
+            this.birthDate = formatDate(clientForm.birthDate());
         }
+    }
+
+    private LocalDate formatDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return LocalDate.parse(date, formatter);
     }
 }
