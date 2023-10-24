@@ -1,9 +1,9 @@
 package com.desafioudstecnologia.controllers;
 
-import com.desafioudstecnologia.exeptions.DuplicateRecordException;
-import com.desafioudstecnologia.exeptions.InvalidArgumentException;
-import com.desafioudstecnologia.exeptions.InvalidDateArgumentException;
-import com.desafioudstecnologia.exeptions.RecordNotFoundException;
+import com.desafioudstecnologia.exceptions.DuplicateRecordException;
+import com.desafioudstecnologia.exceptions.InvalidArgumentException;
+import com.desafioudstecnologia.exceptions.InvalidDateArgumentException;
+import com.desafioudstecnologia.exceptions.RecordNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

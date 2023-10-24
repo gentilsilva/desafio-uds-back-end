@@ -2,13 +2,11 @@ package com.desafioudstecnologia.domain.client;
 
 import com.desafioudstecnologia.domain.order.Order;
 import com.desafioudstecnologia.dtos.client.ClientForm;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
