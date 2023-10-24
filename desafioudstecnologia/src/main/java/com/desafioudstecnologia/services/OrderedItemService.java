@@ -9,6 +9,7 @@ import com.desafioudstecnologia.repositories.OrderedItemRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -23,11 +24,10 @@ public class OrderedItemService {
     }
 
     @Transactional
-    public OrderedItemDTO createOrderedItem(OrderedItemForm orderedItemForm, Order order) throws Exception {
+    public void createOrderedItem(OrderedItemForm orderedItemForm, Order order) {
         Product product = this.productService.getProductByCode(orderedItemForm.code());
         OrderedItem orderedItem = new OrderedItem(orderedItemForm, product, order);
         this.orderedItemRepository.save(orderedItem);
-        return new OrderedItemDTO(orderedItem);
     }
 
 
@@ -35,5 +35,9 @@ public class OrderedItemService {
     public List<OrderedItemDTO> findAllOrderedItemByNumber(Integer number) {
         List<OrderedItem> orderedItemList = this.orderedItemRepository.findAllOrderedItems(number);
         return orderedItemList.stream().map(OrderedItemDTO::new).toList();
+    }
+
+    public BigDecimal sumOrderedItemsPriceByNumber(Integer number) {
+        return this.orderedItemRepository.sumOrderedItemUnitaryPrice(number);
     }
 }

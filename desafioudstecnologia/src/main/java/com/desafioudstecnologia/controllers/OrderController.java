@@ -24,8 +24,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDTO> createOrder(@RequestBody @Valid OrderForm orderForm, UriComponentsBuilder uriComponentsBuilder)
-            throws Exception {
+    public ResponseEntity<OrderDTO> createOrder(@RequestBody @Valid OrderForm orderForm, UriComponentsBuilder uriComponentsBuilder) {
         OrderDTO orderDTO = this.orderService.createOrder(orderForm);
         URI uri = uriComponentsBuilder.path("/orders/{id}").buildAndExpand(orderDTO.id()).toUri();
         return ResponseEntity.created(uri).body(orderDTO);
