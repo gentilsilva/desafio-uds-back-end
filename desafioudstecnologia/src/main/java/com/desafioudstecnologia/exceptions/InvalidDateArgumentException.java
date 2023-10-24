@@ -1,6 +1,4 @@
-package com.desafioudstecnologia.exeptions;
-
-import java.time.LocalDate;
+package com.desafioudstecnologia.exceptions;
 
 public class InvalidDateArgumentException extends RuntimeException {
 

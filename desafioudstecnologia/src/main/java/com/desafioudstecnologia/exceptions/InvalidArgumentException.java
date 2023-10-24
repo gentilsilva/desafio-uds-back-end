@@ -1,4 +1,4 @@
-package com.desafioudstecnologia.exeptions;
+package com.desafioudstecnologia.exceptions;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
 

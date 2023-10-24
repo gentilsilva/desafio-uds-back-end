@@ -1,4 +1,4 @@
-package com.desafioudstecnologia.exeptions;
+package com.desafioudstecnologia.exceptions;
 
 public class RecordNotFoundException extends RuntimeException {
 

@@ -1,6 +1,4 @@
-package com.desafioudstecnologia.exeptions;
-
-import java.util.List;
+package com.desafioudstecnologia.exceptions;
 
 public class DuplicateRecordException extends RuntimeException {
 
