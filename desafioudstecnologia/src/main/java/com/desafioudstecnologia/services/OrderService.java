@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class OrderService {
@@ -45,6 +47,23 @@ public class OrderService {
         for(OrderedItemForm orderedItemForm : orderedItemFormList) {
             this.orderedItemService.createOrderedItem(orderedItemForm, order);
         }
+    }
+
+    public List<OrderDTO> getOrdersByParams(String clientCpf, Integer number, String date, BigDecimal total) {
+        LocalDate emissionDate = null;
+        if(!(date == null)) {
+            emissionDate = FormatDate.searchFormat(date);
+        }
+        List<Order> orderList = this.orderRepository.findAllUsersByClientCpfOrNumberOrEmissionOrTotal(clientCpf, number, emissionDate, total);
+        List<OrderedItemDTO> orderedItemDTOList = orderList.stream().map(order -> this.orderedItemService.findAllOrderedItemByNumber(order.getNumber()))
+                .flatMap(List::stream).toList();
+
+
+        return orderList.stream().map(order -> {
+                    List<OrderedItemDTO> itemDTOList = orderedItemDTOList.stream().filter(
+                            orderedItemDTO -> Objects.equals(orderedItemDTO.orderNumber(), order.getNumber())).toList();
+            return new OrderDTO(order, itemDTOList);
+        }).toList();
     }
 
     public void updatePrice(Order order) {

@@ -2,6 +2,7 @@ package com.desafioudstecnologia.domain.client;
 
 import com.desafioudstecnologia.domain.order.Order;
 import com.desafioudstecnologia.dtos.client.ClientForm;
+import com.desafioudstecnologia.services.FormatDate;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,6 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,7 +41,7 @@ public class Client {
     public Client(ClientForm clientForm) {
         this.name = clientForm.name();
         this.cpf = clientForm.cpf();
-        this.birthDate = formatDate(clientForm.birthDate());
+        this.birthDate = FormatDate.registerFormat(clientForm.birthDate());
     }
 
     public void update(ClientForm clientForm) {
@@ -52,12 +52,7 @@ public class Client {
             this.cpf = clientForm.cpf();
         }
         if(!(clientForm.birthDate() == null)) {
-            this.birthDate = formatDate(clientForm.birthDate());
+            this.birthDate = FormatDate.registerFormat(clientForm.birthDate());
         }
-    }
-
-    private LocalDate formatDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return LocalDate.parse(date, formatter);
     }
 }

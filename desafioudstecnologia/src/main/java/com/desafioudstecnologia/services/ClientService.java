@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -45,7 +44,7 @@ public class ClientService {
     public List<ClientDTO> getAllClientsByParams(String name, String cpf, String birthDate) {
         LocalDate date = null;
         if(!(birthDate == null)) {
-            date = formatDate(birthDate);
+            date = FormatDate.searchFormat(birthDate);
         }
         List<Client> clientList = this.clientRepository.findAllUsersByNameOrCpfOrBirthDate(name, cpf, date);
         return clientList.stream().map(ClientDTO::new).toList();
@@ -82,16 +81,6 @@ public class ClientService {
         if(clientName.isPresent()) {
             throw new DuplicateRecordException(clientForm.name());
         }
-    }
-
-    private LocalDate formatDate(String date) {
-        DateTimeFormatter localDateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate localDate = LocalDate.parse(date, localDateFormatter);
-
-        DateTimeFormatter dataBaseFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String baseDate = localDate.format(dataBaseFormatter);
-
-        return LocalDate.parse(baseDate);
     }
 
     public boolean checkForValidDate(String date) {

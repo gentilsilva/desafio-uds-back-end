@@ -11,12 +11,14 @@ public record OrderedItemDTO(
         BigDecimal unitaryPrice,
         Double discountPercentage,
         BigDecimal total,
-        String code
+        String code,
+
+        Integer orderNumber
 ) {
 
     public OrderedItemDTO(OrderedItem orderedItem) {
         this(orderedItem.getId(), orderedItem.getAmount(), orderedItem.getUnitaryPrice(), orderedItem.getDiscountPercentage(),
-                orderedItem.getTotal(), orderedItem.getProduct().getCode());
+                orderedItem.getTotal(), orderedItem.getProduct().getCode(), orderedItem.getOrder().getNumber());
     }
 
 }
