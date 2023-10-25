@@ -52,7 +52,7 @@ public class ProductController {
     @DeleteMapping("/{code}")
     public ResponseEntity<?> deleteProduct(@PathVariable String code) {
         this.productService.deleteProduct(code);
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 
 }
