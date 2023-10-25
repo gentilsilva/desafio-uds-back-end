@@ -29,7 +29,7 @@ public class Order {
     @JoinColumn(name = "client_cpf", referencedColumnName = "cpf")
     private Client client;
 
-    @OneToMany
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderedItem> orderedItemList;
 
     public Order(Client client, Integer total) {
