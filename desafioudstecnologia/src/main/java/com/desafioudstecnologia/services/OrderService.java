@@ -6,6 +6,7 @@ import com.desafioudstecnologia.dtos.oder.OrderDTO;
 import com.desafioudstecnologia.dtos.oder.OrderForm;
 import com.desafioudstecnologia.dtos.oder.OrderedItemDTO;
 import com.desafioudstecnologia.dtos.oder.OrderedItemForm;
+import com.desafioudstecnologia.exceptions.RecordNotFoundException;
 import com.desafioudstecnologia.repositories.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,5 +50,11 @@ public class OrderService {
     public void updatePrice(Order order) {
         BigDecimal sumPrice = this.orderedItemService.sumOrderedItemsPriceByNumber(order.getNumber());
         order.update(sumPrice);
+    }
+
+    public void deleteOrder(Integer number) {
+        Order order = this.orderRepository.findOrderByNumber(number)
+                .orElseThrow(() -> new RecordNotFoundException(String.valueOf(number)));
+        this.orderRepository.delete(order);
     }
 }
